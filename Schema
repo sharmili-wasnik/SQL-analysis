@@ -1,25 +1,40 @@
-CREATE TABLE customers (
-    customer_id INT PRIMARY KEY,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    city VARCHAR(50),
-    signup_date DATE
-);
-
+-- Products table
 CREATE TABLE products (
     product_id INT PRIMARY KEY,
     product_name VARCHAR(100),
-    category VARCHAR(50),
-    price DECIMAL(10,2)
+    price DECIMAL(10,2),
+    category VARCHAR(50)
 );
 
+-- Customers table
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    city VARCHAR(50),
+    state VARCHAR(50)
+);
+
+-- Employees table (sales reps)
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(100),
+    manager_id INT,
+    hire_date DATE,
+    FOREIGN KEY (manager_id) REFERENCES employees(employee_id)
+);
+
+-- Orders table
 CREATE TABLE orders (
     order_id INT PRIMARY KEY,
-    customer_id INT,
     order_date DATE,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    customer_id INT,
+    employee_id INT,
+    order_status VARCHAR(20),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
+-- Order Items table (many-to-many)
 CREATE TABLE order_items (
     order_item_id INT PRIMARY KEY,
     order_id INT,
